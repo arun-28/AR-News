@@ -14,9 +14,6 @@ async function fetchNews(query) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
         const data = await res.json();
-        if (!data.articles) {
-            throw new Error("No articles found in the response.");
-        }
         bindData(data.articles);
     } catch (error) {
         console.error("Failed to fetch news:", error);
@@ -28,6 +25,11 @@ function bindData(articles) {
     const newsCardTemplate = document.getElementById("template-news-card");
 
     cardsContainer.innerHTML = "";
+
+    if (!articles) {
+        console.error("No articles available");
+        return;
+    }
 
     articles.forEach((article) => {
         if (!article.urlToImage) return;
